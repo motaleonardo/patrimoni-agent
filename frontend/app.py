@@ -2,7 +2,7 @@ import os
 import sys
 
 # Adicionando o diretório do backend ao path do sistema
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'backend')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from backend.configs.general_configs import CONFIG_MODELOS, TIPOS_ARQUIVOS_VALIDOS
 from backend.loader.document_loader import *
@@ -76,10 +76,24 @@ def chat_page():
         st.session_state['memory'] = memory
 
 def sidebar():
-    tabs = st.tabs('Upload de arquivos', 'Selecione o modelo')
+    tabs = st.tabs(['Upload para Pesquisa','Upload de Nova Inteligência', 'Selecione o modelo de LLM'])
 
-    with tabs[0]: # Upload de arquivos
-        st.subheader('Upload de arquivos')
+    with tabs[0]: # Upload para Pesquisa
+        st.subheader('Upload para Pesquisa')
+        file_type = st.selectbox('Selecione o tipo de arquivo para upload:', TIPOS_ARQUIVOS_VALIDOS)
+        if file_type == 'SITE':
+            file = st.text_input('URL do site')
+        if file_type == 'YOUTUBE':
+            file = st.text_input('URL do vídeo')
+        if file_type == 'PDF':
+            file = st.file_uploader('Selecione o arquivo PDF', type=['.pdf'])
+        if file_type == 'CSV':
+            file = st.file_uploader('Selecione o arquivo CSV', type=['.csv'])
+        if file_type == 'TXT':
+            file = st.file_uploader('Selecione o arquivo TXT', type=['.txt'])
+    
+    with tabs[1]: # Upload de Nova Inteligência
+        st.subheader('Upload de Nova Inteligência')
         file_type = st.selectbox('Selecione o tipo de arquivo para upload:', TIPOS_ARQUIVOS_VALIDOS)
         if file_type == 'SITE':
             file = st.text_input('URL do site')
@@ -92,8 +106,8 @@ def sidebar():
         if file_type == 'TXT':
             file = st.file_uploader('Selecione o arquivo TXT', type=['.txt'])
         
-    with tabs[1]:
-        st.subheader('Selecione o modelo')
+    with tabs[2]: # Selecione o modelo de LLM
+        st.subheader('Selecione o modelo de LLM')
         provider = st.selectbox('Selecione o modelo LLM:', CONFIG_MODELOS.keys())
         model = st.selectbox('Selecione o modelo para o assistente:', CONFIG_MODELOS[provider]['modelos'])
         env_key = CONFIG_MODELOS[provider]['env_keys'][model]

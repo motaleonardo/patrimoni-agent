@@ -9,9 +9,13 @@ from langchain_community.document_loaders import (WebBaseLoader,
                                                   CSVLoader,
                                                   TextLoader)
 
+# Define a pasta local onde os arquivos serão salvos
+OUTPUT_DIR = "/Users/leonardomota/Desktop/PatrimoniAI/Dev_/patrimoni-agent/backend/memory/files"
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
 
 # Website loader
-def website_loader(url, output_file_path):
+def website_loader(url, file_name):
     final_document = ''
     for i in range(10):
         try:
@@ -27,46 +31,51 @@ def website_loader(url, output_file_path):
         st.error(f'Não foi possivel carregar a página {url}.')
         st.stop()
     # Salvar o final_document em um arquivo
+    output_file_path = os.path.join(OUTPUT_DIR, file_name)
     with open(output_file_path, 'w', encoding='utf-8') as f:
         f.write(final_document)
     return final_document
 
 # Youtube loader
-def youtube_loader(video_id, output_file_path):
+def youtube_loader(video_id, file_name):
     loader = YoutubeLoader(video_id, add_video_info=False, language='pt')
     list_documents = loader.load()
     final_document = '\n\n'.join([doc.page_content for doc in list_documents])
     # Salvar o final_document em um arquivo
+    output_file_path = os.path.join(OUTPUT_DIR, file_name)
     with open(output_file_path, 'w', encoding='utf-8') as f:
         f.write(final_document)
     return final_document
 
 # PDF loader
-def pdf_loader(file_path, output_file_path):
+def pdf_loader(file_path, file_name):
     loader = PyPDFLoader(file_path)
     list_documents = loader.load()
     final_document = '\n\n'.join([doc.page_content for doc in list_documents])
     # Salvar o final_document em um arquivo
+    output_file_path = os.path.join(OUTPUT_DIR, file_name)
     with open(output_file_path, 'w', encoding='utf-8') as f:
         f.write(final_document)
     return final_document
 
 # CSV loader
-def csv_loader(file_path, output_file_path):
+def csv_loader(file_path, file_name):
     loader = CSVLoader(file_path)
     list_documents = loader.load()
     final_document = '\n\n'.join([doc.page_content for doc in list_documents])
     # Salvar o final_document em um arquivo
+    output_file_path = os.path.join(OUTPUT_DIR, file_name)
     with open(output_file_path, 'w', encoding='utf-8') as f:
         f.write(final_document)
     return final_document
 
 # Text loader
-def text_loader(file_path, output_file_path):
+def text_loader(file_path, file_name):
     loader = TextLoader(file_path)
     list_documents = loader.load()
     final_document = '\n\n'.join([doc.page_content for doc in list_documents])
     # Salvar o final_document em um arquivo
+    output_file_path = os.path.join(OUTPUT_DIR, file_name)
     with open(output_file_path, 'w', encoding='utf-8') as f:
         f.write(final_document)
     return final_document
