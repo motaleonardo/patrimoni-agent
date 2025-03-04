@@ -1,3 +1,9 @@
+import os
+import sys
+
+# Adicionando o diretório do backend ao path do sistema
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'backend')))
+
 from backend.configs.general_configs import CONFIG_MODELOS, TIPOS_ARQUIVOS_VALIDOS
 from backend.loader.document_loader import *
 
